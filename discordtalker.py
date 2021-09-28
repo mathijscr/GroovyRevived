@@ -2,12 +2,11 @@ import discord
 import asyncio
 import os
 import time
-import MusicPlayer
-from YTdownloader import get_mp3_from_search_phrase
-from YTdownloader import get_song_from_search_phrase
+from musicplayer import MusicPlayer
+from ytdownloader import get_song_from_search_phrase
 
 client = discord.Client()
-player = MusicPlayer.MusicPlayer()
+player = MusicPlayer()
 
 
 @client.event
@@ -19,10 +18,10 @@ async def on_ready():
 async def on_message(message):
     user = message.author
     if message.author == client.user:  # skip messages printed by the bot.
-        return
+        pass
+        # do nothing i guess lolz
     elif str(message.channel).strip() != "rhythm-beats":
         print("not in rhythm-beats channel")
-        return
     elif message.content == "skip":
         print("regular skip")
         player.skip_current_song()
@@ -43,7 +42,9 @@ async def on_message(message):
     elif user.voice is not None and user.voice.channel is not None :
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
-        if player.is_playing():  # if already playing, add to que
+        # todo add if test to player.add_song() which either starts() or just adds?
+        # shouldn't be a problem to have add_song as an async function
+        if player.is_playing():  # if already playing, add to queue
             player.add_song(song)
         else:  # attach player to class
                 voice_channel = user.voice.channel
@@ -56,3 +57,4 @@ async def on_message(message):
 
 
 client.run(token)
+

@@ -1,6 +1,6 @@
 import youtube_dl
 import re
-import Song
+from song import Song
 
 
 def download_mp3_from_yt(url, file_location):
@@ -37,18 +37,6 @@ def find_top_yt_url(phrase):
     return return_dict
 
 
-def get_mp3_from_search_phrase(phrase):
-    search_results = find_top_yt_url(phrase)
-    file_name = search_results["title"]
-    file_name = re.sub(r'[^\w\s-]', '', file_name.lower())
-    file_name = re.sub(r'[-\s]+', '-', file_name).strip('-_')
-    file_name = "music/"+file_name + ".mp3"
-    yt_url = search_results["url"]
-    print("params are: ",yt_url,file_name)
-    download_mp3_from_yt(yt_url,file_name)
-    return file_name
-
-
 def get_song_from_search_phrase(phrase):
     search_results = find_top_yt_url(phrase)
     title = search_results["title"]
@@ -61,6 +49,6 @@ def get_song_from_search_phrase(phrase):
     yt_url = search_results["url"]
     print("params are: ",yt_url,file_name)
     download_mp3_from_yt(yt_url,file_name)
-    resulting_song = Song.Song(title, file_name, duration, url )
+    resulting_song = Song(title, file_name, duration, url)
     return resulting_song
 

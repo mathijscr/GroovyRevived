@@ -1,6 +1,5 @@
 import discord
 import asyncio
-import Song
 
 
 class MusicPlayer:
@@ -22,9 +21,6 @@ class MusicPlayer:
         self.attached_player.pause()
         self.status = self.states[2]
 
-    def get_state(self):
-        return self.status
-
     def is_playing(self):
         return self.status != "off"
 
@@ -42,24 +38,23 @@ class MusicPlayer:
         # make sure you're not already in a voice channel playing stuff
         try:
             self.attached_player = await channel.connect()
-            self.attached_player.play(discord.FFmpegPCMAudio(initial_song.get_filename()), after=self.play_next_song)
+        except discord.errors.ClientException:   # if already in a voice channel, just add the song to the queue
+            self.songs.append(initial_song)
+        else:
+            self.attached_player.play(discord.FFmpegPCMAudio(initial_song.filename), after=self.play_next_song)
             self.attached_text_channel = message_channel
             self.message("Player started!")
-        except:
-            self.songs.append(initial_song)
 
     def add_song(self, song):
         self.songs.append(song)
         self.message("there are now: " + str(len(self.songs)) + " in que.")
         self.message("added: " + str(song))
 
-
-
     def play_next_song(self, error):
         print(error)
         if len(self.songs) > 0:
             next_song = self.songs.pop(0)
-            next_song_filename = next_song.get_filename()
+            next_song_filename = next_song.filename
             m2 = str(len(self.songs))
             self.active_song = next_song
             self.attached_player.play(discord.FFmpegPCMAudio(next_song_filename), after=self.play_next_song)
@@ -98,10 +93,10 @@ class MusicPlayer:
     def print_que(self):
         total_duration = 0
         if len(self.songs) > 0 :
-            for i in range(0, len(self.songs)):
-                song = self.songs[i]
-                message = str(i+1) + ") " + song.get_title() + " " + str(song.get_duration())
-                total_duration += song.get_duration_in_minutes()
+            for index, song in enumerate(self.songs):
+                message = str(index+1) + ") " + song.title + " " + str(song.duration)
+                message = f" {index +1} ) {song.title}  {song.duration}"
+                total_duration += song.duration_in_minutes
                 self.message(message)
             self.message("total duration of songs in que is approximately : " + str(round(total_duration)) + " minutes" )
         else:
