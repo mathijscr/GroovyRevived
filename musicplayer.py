@@ -38,7 +38,7 @@ class MusicPlayer:
         # make sure you're not already in a voice channel playing stuff
         try:
             self.attached_player = await channel.connect()
-        except discord.errors.ClientException:   # if already in a voice channel, just add the song to the queue
+        except discord.errors.ClientException:   # if already in a voice channel, just add the song to the queueue
             self.songs.append(initial_song)
         else:
             self.attached_player.play(discord.FFmpegPCMAudio(initial_song.filename), after=self.play_next_song)
@@ -47,7 +47,7 @@ class MusicPlayer:
 
     def add_song(self, song):
         self.songs.append(song)
-        self.message("there are now: " + str(len(self.songs)) + " in que.")
+        self.message("there are now: " + str(len(self.songs)) + " in queue.")
         self.message("added: " + str(song))
 
     def play_next_song(self, error):
@@ -59,7 +59,7 @@ class MusicPlayer:
             self.active_song = next_song
             self.attached_player.play(discord.FFmpegPCMAudio(next_song_filename), after=self.play_next_song)
             self.message("now playing " + next_song_filename)
-            self.message("there are " + m2 + " left in que.")
+            self.message("there are " + m2 + " left in queue.")
         else:
             print("no more songs to play")
             self.stop()
@@ -70,7 +70,7 @@ class MusicPlayer:
 
     def skip_last_song(self):
         removed_song = self.songs.pop()
-        message = "Removed " + str(removed_song) + " from que"
+        message = "Removed " + str(removed_song.title) + " from queue"
         self.message(message)
 
     def skip_current_song(self):
@@ -88,9 +88,9 @@ class MusicPlayer:
             self.skip_last_song()
         else:
             self.songs.pop(index-1)
-        self.print_que()
+        self.print_queue()
 
-    def print_que(self):
+    def print_queue(self):
         total_duration = 0
         if len(self.songs) > 0 :
             for index, song in enumerate(self.songs):
@@ -98,9 +98,9 @@ class MusicPlayer:
                 message = f" {index +1} ) {song.title}  {song.duration}"
                 total_duration += song.duration_in_minutes
                 self.message(message)
-            self.message("total duration of songs in que is approximately : " + str(round(total_duration)) + " minutes" )
+            self.message("total duration of songs in queue is approximately : " + str(round(total_duration)) + " minutes" )
         else:
-            self.message("Que is empty")
+            self.message("queue is empty")
 
 
 

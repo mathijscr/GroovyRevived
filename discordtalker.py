@@ -33,8 +33,8 @@ async def on_message(message):
             print("special skip")
         except:
             await message.channel.send("postion to skip couldn't be parsed")
-    elif message.content == "que":
-        player.print_que()
+    elif message.content == "queue":
+        player.print_queue()
     elif message.content == "mistake":
         player.skip_last_song()
     elif message.content == "stop":
@@ -44,7 +44,7 @@ async def on_message(message):
         song = get_song_from_search_phrase(message.content)
         # todo add if test to player.add_song() which either starts() or just adds?
         # shouldn't be a problem to have add_song as an async function
-        if player.is_playing():  # if already playing, add to queue
+        if player.is_playing():  # if already playing, add to queueue
             player.add_song(song)
         else:  # attach player to class
                 voice_channel = user.voice.channel
@@ -56,5 +56,5 @@ async def on_message(message):
         await text_channel.send("not in an active voice channel")
 
 
-client.run(token)
+client.run("ODcxNDI2NzIyNDA5NjM1ODQw.YQbJYA.GZOv887UGgMHHjTgnTtzfe6yHxo")
 
