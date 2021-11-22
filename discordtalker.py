@@ -58,4 +58,4 @@ async def on_message(message):
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv("discord_token")
-client.run("ODcxNDI2NzIyNDA5NjM1ODQw.YQbJYA.qA58c_wyzJhgpSMQGkObdaKN_uU")
+client.run(DISCORD_TOKEN)
