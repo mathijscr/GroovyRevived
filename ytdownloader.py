@@ -1,6 +1,7 @@
-import youtube_dl
 import re
 from song import Song
+import asyncio
+import yt_dlp
 
 
 def download_mp3_from_yt(url, file_location):
@@ -16,7 +17,7 @@ def download_mp3_from_yt(url, file_location):
         'preferredquality': '192',
     }], 'outtmpl': file_location}
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
     return file_location
 

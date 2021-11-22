@@ -2,6 +2,7 @@ import discord
 import asyncio
 import os
 import time
+from dotenv import load_dotenv
 from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
@@ -55,6 +56,6 @@ async def on_message(message):
         text_channel = message.channel
         await text_channel.send("not in an active voice channel")
 
-
-client.run("ODcxNDI2NzIyNDA5NjM1ODQw.YQbJYA.GZOv887UGgMHHjTgnTtzfe6yHxo")
-
+load_dotenv()
+DISCORD_TOKEN = os.getenv("discord_token")
+client.run("ODcxNDI2NzIyNDA5NjM1ODQw.YQbJYA.qA58c_wyzJhgpSMQGkObdaKN_uU")
