@@ -1,5 +1,8 @@
 import discord
 import asyncio
+import os
+from humanize import naturalsize
+from foldersizehelper import get_music_folder_size
 
 
 class MusicPlayer:
@@ -44,6 +47,8 @@ class MusicPlayer:
             self.attached_player.play(discord.FFmpegPCMAudio(initial_song.filename), after=self.play_next_song)
             self.attached_text_channel = message_channel
             self.message("Player started!")
+            size = get_music_folder_size()
+            self.message("current space used is: " + str(size))
 
     def add_song(self, song):
         self.songs.append(song)

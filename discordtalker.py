@@ -40,6 +40,8 @@ async def on_message(message):
         player.skip_last_song()
     elif message.content == "stop":
         player.stop()
+    elif message.content == "cleanup":
+        print(os.system("rm -rf ./music/*"))
     elif user.voice is not None and user.voice.channel is not None :
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
