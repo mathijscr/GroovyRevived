@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
-client = discord.Client()
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
 player = MusicPlayer()
 
 
@@ -25,6 +26,9 @@ async def on_message(message):
         print("not in rhythm-beats channel")
     elif message.content == "skip":
         print("regular skip")
+        player.skip_current_song()
+    elif message.content == "test":
+        print("test message")
         player.skip_current_song()
     elif message.content.startswith("skipx"):
         try:
@@ -60,4 +64,5 @@ async def on_message(message):
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv("discord_token")
+
 client.run(DISCORD_TOKEN)

@@ -1,5 +1,6 @@
 import re
 from song import Song
+from youtubesearchpython import VideosSearch
 import asyncio
 import yt_dlp
 
@@ -28,7 +29,7 @@ def find_top_yt_url(phrase):
     :param phrase: the search phrase
     :return: a dict containing the url,title and duration of the video
     """
-    from youtubesearchpython import VideosSearch
+
     VSresult = VideosSearch(phrase, limit=1)
     parsed_result = VSresult.result()["result"][0]
     url = parsed_result["link"]
