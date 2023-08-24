@@ -2,7 +2,7 @@ import re
 from song import Song
 from youtubesearchpython import VideosSearch
 import asyncio
-import yt_dlp
+from pytube import YouTube
 
 
 def download_mp3_from_yt(url, file_location):
@@ -12,14 +12,14 @@ def download_mp3_from_yt(url, file_location):
     :param file_location: filename and location of where the file should be saved
     :return: on success, returns file location
     """
-    ydl_opts = {'format': 'bestaudio/best', 'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }], 'outtmpl': file_location}
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+    try:
+        video = YouTube(url)
+        stream = video.streams.filter(only_audio=True).first()
+        stream.download(filename=file_location)
+        print("The video is downloaded in MP3")
+    except KeyError:
+        print("Unable to fetch video information. Please check the video URL or your network connection.")
     return file_location
 
 
@@ -30,8 +30,8 @@ def find_top_yt_url(phrase):
     :return: a dict containing the url,title and duration of the video
     """
 
-    VSresult = VideosSearch(phrase, limit=1)
-    parsed_result = VSresult.result()["result"][0]
+    vs_result = VideosSearch(phrase, limit=1)
+    parsed_result = vs_result.result()["result"][0]
     url = parsed_result["link"]
     title = parsed_result["title"]
     duration = parsed_result["duration"]
@@ -44,13 +44,9 @@ def get_song_from_search_phrase(phrase):
     title = search_results["title"]
     url = search_results["url"]
     duration = search_results["duration"]
-    file_name = search_results["title"]
-    file_name = re.sub(r'[^\w\s-]', '', file_name.lower())
-    file_name = re.sub(r'[-\s]+', '-', file_name).strip('-_')
-    file_name = "music/"+file_name + ".mp3"
+    file_name = "music/" + title + ".mp3"
     yt_url = search_results["url"]
-    print("params are: ",yt_url,file_name)
-    download_mp3_from_yt(yt_url,file_name)
+    download_mp3_from_yt(yt_url, file_name)
     resulting_song = Song(title, file_name, duration, url)
     return resulting_song
 

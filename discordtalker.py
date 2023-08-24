@@ -56,7 +56,7 @@ async def on_message(message):
         else:  # attach player to class
                 voice_channel = user.voice.channel
                 # grab user's voice channel
-                print("starting)")
+                print("starting")
                 await player.start(voice_channel, text_channel, song)
     else:
         text_channel = message.channel
