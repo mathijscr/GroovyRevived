@@ -1,12 +1,13 @@
-import discord
-import asyncio
 import os
-import time
+
+import discord
 from dotenv import load_dotenv
+
 from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
 intents = discord.Intents.default()
+intents.message_content = True
 client = discord.Client(intents=intents)
 player = MusicPlayer()
 
@@ -46,21 +47,22 @@ async def on_message(message):
         player.stop()
     elif message.content == "cleanup":
         print(os.system("rm -rf ./music/*"))
-    elif user.voice is not None and user.voice.channel is not None :
+    elif user.voice is not None and user.voice.channel is not None:
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
         # todo add if test to player.add_song() which either starts() or just adds?
         # shouldn't be a problem to have add_song as an async function
-        if player.is_playing():  # if already playing, add to queueue
+        if player.is_playing():  # if already playing, add to queue
             player.add_song(song)
         else:  # attach player to class
-                voice_channel = user.voice.channel
-                # grab user's voice channel
-                print("starting")
-                await player.start(voice_channel, text_channel, song)
+            voice_channel = user.voice.channel
+            # grab user's voice channel
+            print("starting")
+            await player.start(voice_channel, text_channel, song)
     else:
         text_channel = message.channel
         await text_channel.send("not in an active voice channel")
+
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv("discord_token")

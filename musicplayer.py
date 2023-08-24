@@ -1,7 +1,7 @@
-import discord
 import asyncio
-import os
-from humanize import naturalsize
+
+import discord
+
 from foldersizehelper import get_music_folder_size
 
 
@@ -41,10 +41,14 @@ class MusicPlayer:
         # make sure you're not already in a voice channel playing stuff
         try:
             self.attached_player = await channel.connect()
-        except discord.errors.ClientException:   # if already in a voice channel, just add the song to the queueue
+        except (
+            discord.errors.ClientException
+        ):  # if already in a voice channel, just add the song to the queueue
             self.songs.append(initial_song)
         else:
-            self.attached_player.play(discord.FFmpegPCMAudio(initial_song.filename), after=self.play_next_song)
+            self.attached_player.play(
+                discord.FFmpegPCMAudio(initial_song.filename), after=self.play_next_song
+            )
             self.attached_text_channel = message_channel
             self.message("Player started!")
             size = get_music_folder_size()
@@ -62,7 +66,9 @@ class MusicPlayer:
             next_song_filename = next_song.filename
             m2 = str(len(self.songs))
             self.active_song = next_song
-            self.attached_player.play(discord.FFmpegPCMAudio(next_song_filename), after=self.play_next_song)
+            self.attached_player.play(
+                discord.FFmpegPCMAudio(next_song_filename), after=self.play_next_song
+            )
             self.message("now playing " + next_song_filename)
             self.message("there are " + m2 + " left in queue.")
         else:
@@ -86,27 +92,27 @@ class MusicPlayer:
         else:
             self.stop()
 
-    def skip_index(self,index):
+    def skip_index(self, index):
         if index == 1:
             self.skip_current_song()
         elif index == len(self.songs) and index > 1:
             self.skip_last_song()
         else:
-            self.songs.pop(index-1)
+            self.songs.pop(index - 1)
         self.print_queue()
 
     def print_queue(self):
         total_duration = 0
-        if len(self.songs) > 0 :
+        if len(self.songs) > 0:
             for index, song in enumerate(self.songs):
-                message = str(index+1) + ") " + song.title + " " + str(song.duration)
+                message = str(index + 1) + ") " + song.title + " " + str(song.duration)
                 message = f" {index +1} ) {song.title}  {song.duration}"
                 total_duration += song.duration_in_minutes
                 self.message(message)
-            self.message("total duration of songs in queue is approximately : " + str(round(total_duration)) + " minutes" )
+            self.message(
+                "total duration of songs in queue is approximately : "
+                + str(round(total_duration))
+                + " minutes"
+            )
         else:
             self.message("queue is empty")
-
-
-
-

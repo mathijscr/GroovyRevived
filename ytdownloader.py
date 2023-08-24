@@ -1,13 +1,12 @@
-import re
-from song import Song
-from youtubesearchpython import VideosSearch
-import asyncio
 from pytube import YouTube
+from youtubesearchpython import VideosSearch
+
+from song import Song
 
 
 def download_mp3_from_yt(url, file_location):
     """
-    This functions downloads the audio of a youtube url, encoded as mp3, to a specific file lcoation
+    This functions downloads the audio of a youtube url, encoded as mp3, to a specific file location
     :param url: url of the youtube video
     :param file_location: filename and location of where the file should be saved
     :return: on success, returns file location
@@ -19,7 +18,9 @@ def download_mp3_from_yt(url, file_location):
         stream.download(filename=file_location)
         print("The video is downloaded in MP3")
     except KeyError:
-        print("Unable to fetch video information. Please check the video URL or your network connection.")
+        print(
+            "Unable to fetch video information. Please check the video URL or your network connection."
+        )
     return file_location
 
 
@@ -49,4 +50,3 @@ def get_song_from_search_phrase(phrase):
     download_mp3_from_yt(yt_url, file_name)
     resulting_song = Song(title, file_name, duration, url)
     return resulting_song
-

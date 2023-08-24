@@ -1,5 +1,7 @@
 import os
+
 from humanize import naturalsize
+
 
 def get_music_folder_size():
     total = 0

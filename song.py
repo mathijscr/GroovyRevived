@@ -1,5 +1,3 @@
-
-
 class Song:
     def __init__(self, title, filename, duration, url):
         # initializing instance variable
@@ -11,9 +9,23 @@ class Song:
         self.url = url
 
     def __str__(self):
-        phrase = str(self.title) + "\n" + "duration: " + str(self.duration) + "\n url: " + str(self.url)
+        phrase = (
+            str(self.title)
+            + "\n"
+            + "duration: "
+            + str(self.duration)
+            + "\n url: "
+            + str(self.url)
+        )
         return phrase
 
     def __repr__(self):
-        phrase = str(self.title) + "\n" + "duration: " + str(self.duration) + "\n url: " + str(self.url)
+        phrase = (
+            str(self.title)
+            + "\n"
+            + "duration: "
+            + str(self.duration)
+            + "\n url: "
+            + str(self.url)
+        )
         return phrase
