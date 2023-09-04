@@ -1,5 +1,5 @@
 import sqlite3
-from functools import cache
+from functools import lru_cache
 
 from GroovyRevived.song import Song
 
@@ -7,7 +7,7 @@ from GroovyRevived.song import Song
 class DatabaseConnection:
     filename: str = "database.db"
 
-    @cache
+    @lru_cache(maxsize=0)
     def get_connection(self):
         return sqlite3.connect(self.filename)
 
