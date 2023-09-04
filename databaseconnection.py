@@ -35,3 +35,14 @@ class DatabaseConnection:
                 """
             )
 
+    def show_top_users(self):
+        with self.get_connection() as conn:
+            return conn.execute(
+                """
+                SELECT user, SUM(count) AS count
+                FROM GroovyHistory
+                GROUP BY user
+                ORDER BY count DESC
+                LIMIT 10
+                """
+            )

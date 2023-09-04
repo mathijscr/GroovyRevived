@@ -54,10 +54,10 @@ async def on_message(message):
         response = db_conn.show_top_songs()
         for row in response:
             player.message(f'{row[0]} has been played {row[1]} times')
-    elif message.content == "top songs":
-        response = db_conn.show_top_songs()
+    elif message.content == "top users":
+        response = db_conn.show_top_users()
         for row in response:
-            player.message(f'{row[0]} has been played {row[1]} times')
+            player.message(f'{row[0]} has played {row[1]} songs')
     elif user.voice is not None and user.voice.channel is not None:
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
