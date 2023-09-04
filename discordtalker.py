@@ -3,6 +3,7 @@ import os
 import discord
 from dotenv import load_dotenv
 
+from GroovyRevived.databaseconnection import DatabaseConnection
 from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
@@ -10,6 +11,8 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 player = MusicPlayer()
+
+db_conn = DatabaseConnection()
 
 
 @client.event
@@ -47,11 +50,19 @@ async def on_message(message):
         player.stop()
     elif message.content == "cleanup":
         print(os.system("rm -rf ./music/*"))
+    elif message.content == "top songs":
+        response = db_conn.show_top_songs()
+        for row in response:
+            player.message(f'{row[0]} has been played {row[1]} times')
+    elif message.content == "top songs":
+        response = db_conn.show_top_songs()
+        for row in response:
+            player.message(f'{row[0]} has been played {row[1]} times')
     elif user.voice is not None and user.voice.channel is not None:
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
-        # todo add if test to player.add_song() which either starts() or just adds?
-        # shouldn't be a problem to have add_song as an async function
+        db_conn.add_song_to_db(song, user)
+
         if player.is_playing():  # if already playing, add to queue
             player.add_song(song)
         else:  # attach player to class
