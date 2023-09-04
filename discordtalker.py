@@ -8,7 +8,8 @@ from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
 intents = discord.Intents.default()
-intents.message_content = True
+#intents.message_content = True    # FOR VERSION 2.3.2 locally
+intents.messages = True    # FOR VERSION 1.7.3 on render
 client = discord.Client(intents=intents)
 player = MusicPlayer()
 
