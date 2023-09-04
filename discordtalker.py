@@ -3,7 +3,7 @@ import os
 import discord
 from dotenv import load_dotenv
 
-from GroovyRevived.databaseconnection import DatabaseConnection
+from databaseconnection import DatabaseConnection
 from musicplayer import MusicPlayer
 from ytdownloader import get_song_from_search_phrase
 
