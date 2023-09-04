@@ -1,7 +1,7 @@
 import sqlite3
 from functools import lru_cache
 
-from GroovyRevived.song import Song
+from song import Song
 
 
 class DatabaseConnection:
