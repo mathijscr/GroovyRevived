@@ -20,7 +20,7 @@ class DatabaseConnection:
                 ON CONFLICT(title,user) DO UPDATE SET count=count+1
                 """
                 ,
-                (song.title, str(user), 1)
+                (song.title, user, 1)
             )
 
     def show_top_songs(self):

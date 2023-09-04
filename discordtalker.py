@@ -61,7 +61,7 @@ async def on_message(message):
     elif user.voice is not None and user.voice.channel is not None:
         text_channel = message.channel
         song = get_song_from_search_phrase(message.content)
-        db_conn.add_song_to_db(song, user)
+        db_conn.add_song_to_db(song, str(user))
 
         if player.is_playing():  # if already playing, add to queue
             player.add_song(song)
